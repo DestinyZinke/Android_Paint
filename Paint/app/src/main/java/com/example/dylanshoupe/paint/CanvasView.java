@@ -10,6 +10,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+
 // Code from https://examples.javacodegeeks.com/android/core/graphics/canvas-graphics/android-canvas-example/
 
 public class CanvasView extends View {
@@ -38,6 +40,33 @@ public class CanvasView extends View {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeWidth(4f);
+    }
+
+    public void updatePaint(String color, String brush)
+    {
+        mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStrokeJoin(Paint.Join.ROUND);
+        switch (color)
+        {
+            case "Red":
+                mPaint.setColor(Color.RED);
+                break;
+            case "Blue":
+                mPaint.setColor(Color.BLUE);
+                break;
+            case "Green":
+                mPaint.setColor(Color.GREEN);
+                break;
+            case "White":
+                mPaint.setColor(Color.WHITE);
+                break;
+            case "Black":
+                mPaint.setColor(Color.BLACK);
+                break;
+        }
+        mPaint.setStrokeWidth(Float.parseFloat(brush));
     }
 
     // override onSizeChanged
