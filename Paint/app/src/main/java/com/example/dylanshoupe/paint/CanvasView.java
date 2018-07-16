@@ -15,12 +15,11 @@ import java.util.ArrayList;
 // Code from https://examples.javacodegeeks.com/android/core/graphics/canvas-graphics/android-canvas-example/
 
 public class CanvasView extends View {
-
-    public int width;
-    public int height;
     private Bitmap mBitmap;
     private Canvas mCanvas;
     private Path mPath;
+    private ArrayList<Path> pathList;
+    private ArrayList<Paint> paintList;
     Context context;
     private Paint mPaint;
     private float mX, mY;
@@ -32,6 +31,8 @@ public class CanvasView extends View {
 
         // we set a new Path
         mPath = new Path();
+        pathList = new ArrayList<Path>();
+        paintList = new ArrayList<Paint>();
 
         // and we set a new Paint with the desired attributes
         mPaint = new Paint();
@@ -42,14 +43,12 @@ public class CanvasView extends View {
         mPaint.setStrokeWidth(4f);
     }
 
-    public void updatePaint(String color, String brush)
-    {
+    public void updatePaint(String color, String brush) {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
-        switch (color)
-        {
+        switch (color) {
             case "Red":
                 mPaint.setColor(Color.RED);
                 break;
@@ -67,6 +66,7 @@ public class CanvasView extends View {
                 break;
         }
         mPaint.setStrokeWidth(Float.parseFloat(brush));
+
     }
 
     // override onSizeChanged
@@ -84,7 +84,9 @@ public class CanvasView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         // draw the mPath with the mPaint on the canvas when onDraw
-        canvas.drawPath(mPath, mPaint);
+        for (int i = 0; i < pathList.size(); i++) {
+            canvas.drawPath(pathList.get(i), paintList.get(i));
+        }
     }
 
     // when ACTION_DOWN start touch according to the x,y values
@@ -106,7 +108,8 @@ public class CanvasView extends View {
     }
 
     public void clearCanvas() {
-        mPath.reset();
+        pathList.clear();
+        paintList.clear();
         invalidate();
     }
 
@@ -123,7 +126,10 @@ public class CanvasView extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                mPath = new Path();
                 startTouch(x, y);
+                pathList.add(mPath);
+                paintList.add(mPaint);
                 invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:

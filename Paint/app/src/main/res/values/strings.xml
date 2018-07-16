@@ -3,4 +3,5 @@
     <string name="btnClear">Clear Canvas</string>
     <string name="color">Color</string>
     <string name="brush">Brush Size</string>
+    <string name="save">Save</string>
 </resources>

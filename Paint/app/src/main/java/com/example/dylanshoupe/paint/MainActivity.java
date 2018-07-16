@@ -1,11 +1,18 @@
 package com.example.dylanshoupe.paint;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,5 +70,39 @@ public class MainActivity extends AppCompatActivity {
 
     public void clearCanvas(View v) {
         customCanvas.clearCanvas();
+    }
+
+    public void save(View view) {
+//        customCanvas.setDrawingCacheEnabled(true);
+//        Bitmap bitmap = customCanvas.getDrawingCache();
+//        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+//        File file = new File(path + File.separator + "name" + ".png");
+//        Toast.makeText(getApplicationContext(), file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+//        try {
+//            if (!file.exists()) {
+//                file.createNewFile();
+//            }
+//            FileOutputStream ostream = new FileOutputStream(file);
+//            bitmap.compress(Bitmap.CompressFormat.PNG, 10, ostream);
+//
+//            ostream.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        customCanvas.setWillNotCacheDrawing(true);
+        Bitmap bitmap = customCanvas.getDrawingCache();
+
+        try
+        {
+            FileOutputStream fos = openFileOutput("name.png", Context.MODE_PRIVATE);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 10, fos);
+
+            fos.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }
